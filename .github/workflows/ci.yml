@@ -24,6 +24,16 @@ jobs:
       uses: abel0b/setup-premake@v1
 
     ## Linux & MacOS-specific build steps
+    # Install libsodium on Linux
+    - name: Install libsodium (Linux)
+      if: runner.os == 'Linux'
+      run: sudo apt-get update && sudo apt-get install -y libsodium-dev
+
+    # Install libsodium on macOS
+    - name: Install libsodium (macOS)
+      if: runner.os == 'macOS'
+      run: brew install libsodium
+
     # Build with premake + make
     - name: Build (gmake)
       if: runner.os != 'Windows'
@@ -57,4 +67,3 @@ jobs:
     - name: Test (vs2019)
       if: runner.os == 'Windows'
       run: "& ./bin/${{ matrix.configuration }}/test.exe"
-      
